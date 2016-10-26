@@ -18,7 +18,18 @@
 
 #import "FBSDKShareAPI.h"
 
-#if !TARGET_OS_TV
+#if TARGET_OS_TV
+    #ifdef USE_ALASSETS_LIBRARY
+        #undef USE_ALASSETS_LIBRARY
+    #endif // USE_ALASSETS_LIBRARY
+    #define USE_ALASSETS_LIBRARY 0
+#endif
+
+#ifndef USE_ALASSETS_LIBRARY
+    #define USE_ALASSETS_LIBRARY 0
+#endif /* HOCKEYSDK_FEATURE_CRASH_REPORTER */
+
+#if USE_ALASSETS_LIBRARY
 #import <AssetsLibrary/AssetsLibrary.h>
 #endif
 
@@ -50,7 +61,7 @@ static NSMutableArray *g_pendingFBSDKShareAPI;
 
 @implementation FBSDKShareAPI {
   NSFileHandle *_fileHandle;
-#if !TARGET_OS_TV
+#if USE_ALASSETS_LIBRARY
   ALAssetRepresentation *_assetRepresentation;
 #endif
 }
@@ -75,7 +86,7 @@ static NSMutableArray *g_pendingFBSDKShareAPI;
 
 #pragma mark - Object Lifecycle
 
-#if !TARGET_OS_TV
+#if USE_ALASSETS_LIBRARY
 + (ALAssetsLibrary *)defaultAssetsLibrary {
   static dispatch_once_t pred = 0;
   static ALAssetsLibrary *library = nil;
@@ -419,7 +430,7 @@ static NSMutableArray *g_pendingFBSDKShareAPI;
     [videoUploader start];
     return YES;
   } else if (videoURL) {
-#if TARGET_OS_TV
+#if !USE_ALASSETS_LIBRARY
     return NO;
 #else
     if (![self _addToPendingShareAPI]) {
@@ -766,7 +777,7 @@ static NSMutableArray *g_pendingFBSDKShareAPI;
   @synchronized(g_pendingFBSDKShareAPI) {
     [g_pendingFBSDKShareAPI removeObject:self];
     _fileHandle = nil;
-#if !TARGET_OS_TV
+#if USE_ALASSETS_LIBRARY
     _assetRepresentation = nil;
 #endif
   }
@@ -785,7 +796,7 @@ static NSMutableArray *g_pendingFBSDKShareAPI;
     }
     return videoChunkData;
   }
-#if !TARGET_OS_TV
+#if USE_ALASSETS_LIBRARY
   else if (_assetRepresentation) {
     NSMutableData *data = [NSMutableData dataWithLength:chunkSize];
     NSError *error;
