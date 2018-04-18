@@ -1,4 +1,4 @@
-// Copyright (c) 2014-present, Facebook, Inc. All rights reserved.
+// Copyright 2004-present Facebook. All Rights Reserved.
 //
 // You are hereby granted a non-exclusive, worldwide, royalty-free license to use,
 // copy, modify, and distribute this software in source code or binary form for use
@@ -19,8 +19,9 @@
 
 #import <AccountKit/AKFViewController.h>
 
+#import "FBTweak/FBTweakInline.h"
+
 #import "AdvancedUIManager.h"
-#import "FBTweakInline.h"
 #import "ReverbTheme.h"
 #import "ReverbUIManager.h"
 #import "Theme.h"
@@ -102,38 +103,29 @@ static NSArray *fbPermissions;
   return [FBTweakValue(@"Settings", @"AccountKit", @"Response Type", @(AKFResponseTypeAccessToken), [SettingsUtil responseTypes]) integerValue];
 }
 
-+ (Theme *)currentTheme
++ (void)setUIManagerForController:(id<AKFViewController>)controller
 {
   ThemeType themeType = [FBTweakValue(@"Settings", @"AccountKit", @"Theme", @(ThemeTypeDefault), [SettingsUtil themeTweakValues]) integerValue];
-  Theme *theme = nil;
-  if ([Theme isReverbTheme:themeType]) {
-    theme = [ReverbTheme themeWithType:themeType];
-  } else {
-    theme = [Theme themeWithType:themeType];
-  }
-  return theme;
-}
-
-+ (void)setAdvancedUIManagerForController:(id<AKFViewController>)controller
-{
-  Theme *theme = [self currentTheme];
   BOOL useAdvancedUIManager = FBTweakValue(@"Settings", @"AccountKit", @"Advanced Theme", NO);
-  if (useAdvancedUIManager || [Theme isReverbTheme:theme.themeType]) {
+  if ([Theme isSkinTheme:themeType]) {
+    controller.uiManager = [[AKFSkinManager alloc] initWithSkinType:themeType];
+  } else if ([Theme isReverbTheme:themeType] || useAdvancedUIManager) {
     AKFButtonType entryButtonType = [FBTweakValue(@"Settings", @"AccountKit", @"Entry Button", @(AKFButtonTypeDefault), [SettingsUtil entryButtonTweakValues]) integerValue];
     AKFButtonType confirmButtonType = [FBTweakValue(@"Settings", @"AccountKit", @"Confirm Button", @(AKFButtonTypeDefault), [SettingsUtil entryButtonTweakValues]) integerValue];
     AKFTextPosition textPosition = [FBTweakValue(@"Settings", @"AccountKit", @"Text Position", @(AKFButtonTypeDefault), [SettingsUtil textPositionTweakValues]) integerValue];
-    if ([Theme isReverbTheme:theme.themeType]) {
-      controller.advancedUIManager = [[ReverbUIManager alloc] initWithConfirmButtonType:confirmButtonType
-                                                                        entryButtonType:entryButtonType
-                                                                              loginType:controller.loginType
-                                                                           textPosition:textPosition
-                                                                                  theme:(ReverbTheme *)theme
-                                                                               delegate:nil];
+    if ([Theme isReverbTheme:themeType]) {
+      controller.uiManager = [[ReverbUIManager alloc] initWithConfirmButtonType:confirmButtonType
+                                                                entryButtonType:entryButtonType
+                                                                      loginType:controller.loginType
+                                                                   textPosition:textPosition
+                                                                          theme:[ReverbTheme themeWithType:themeType]
+                                                                       delegate:nil];
     } else {
-      controller.advancedUIManager = [[AdvancedUIManager alloc] initWithConfirmButtonType:confirmButtonType
-                                                                          entryButtonType:entryButtonType
-                                                                                loginType:controller.loginType
-                                                                             textPosition:textPosition];
+      controller.uiManager = [[AdvancedUIManager alloc] initWithConfirmButtonType:confirmButtonType
+                                                                  entryButtonType:entryButtonType
+                                                                        loginType:controller.loginType
+                                                                     textPosition:textPosition
+                                                                            theme:[Theme themeWithType:themeType]];
     }
   }
 }

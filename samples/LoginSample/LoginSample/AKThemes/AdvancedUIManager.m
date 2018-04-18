@@ -1,4 +1,4 @@
-// Copyright (c) 2014-present, Facebook, Inc. All rights reserved.
+// Copyright 2004-present Facebook. All Rights Reserved.
 //
 // You are hereby granted a non-exclusive, worldwide, royalty-free license to use,
 // copy, modify, and distribute this software in source code or binary form for use
@@ -32,12 +32,14 @@
                           entryButtonType:(AKFButtonType)entryButtonType
                                 loginType:(AKFLoginType)loginType
                              textPosition:(AKFTextPosition)textPosition
+                                    theme:(AKFTheme *)theme
 {
   if ((self = [super init])) {
     _confirmButtonType = confirmButtonType;
     _entryButtonType = entryButtonType;
     _textPosition = textPosition;
     _loginType = loginType;
+    _theme = theme;
   }
   return self;
 }
@@ -72,6 +74,8 @@
     case AKFLoginFlowStateEmailVerify:
     case AKFLoginFlowStateSendingCode:
     case AKFLoginFlowStateVerifyingCode:
+    case AKFLoginFlowStateCountryCode:
+    case AKFLoginFlowStateResendCode:
       return AKFButtonTypeDefault;
   }
 }
@@ -159,7 +163,11 @@
     case AKFLoginFlowStateError:
       prefix = @"Custom Error";
       break;
+    case AKFLoginFlowStateResendCode:
+      prefix = @"Custom Resend Code";
+      break;
     case AKFLoginFlowStateNone:
+    case AKFLoginFlowStateCountryCode:
       return nil;
   }
   return [self _viewWithText:[NSString stringWithFormat:@"%@ %@", prefix, suffix] intrinsicHeight:intrinsicHeight];

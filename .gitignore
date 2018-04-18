@@ -1,3 +1,22 @@
+AccountKit/**/AccountKitServerSnapshotTests.xcworkspace/*
+AccountKit/**/AccountKitServerSnapshotTests.xcodeproj/*
+ads/samples/AdUnitsSample/AdUnitsSample.xcodeproj/*
+ads/samples/AdUnitsSample/AdUnitsSample.xcworkspace/*
+ads/samples/NativeAdSample/NativeAdSample.xcodeproj/*
+ads/samples/NativeAdSample/NativeAdSample.xcworkspace/*
+
+ads/internal/samples/Hackvertising/Hackvertising.xcodeproj/*
+ads/internal/samples/Hackvertising/Hackvertising.xcworkspace/*
+
+ads/ancamp/ANCampApp/ANCampApp.xcodeproj/*
+ads/ancamp/ANCampApp/ANCampApp.xcworkspace/*
+
+ads/src/FBAudienceNetwork.xcworkspace/*
+ads/src/FBAudienceNetwork/FBAudienceNetworkWorkspace.xcworkspace/*
+ads/src/FBAudienceNetwork/FBAudienceNetwork.xcodeproj/*
+ads/src/FBAudienceNetwork/FBAudienceNetwork.xcworkspace/*
+internal/testing/IpaSizeTestApp/**/*.xcworkspace/*
+internal/testing/IpaSizeTestApp/**/*.xcodeproj/*
 samples/Hackbook/build/
 samples/Hackbook/Hackbook.xcodeproj/*.pbxuser
 samples/Hackbook/Hackbook.xcodeproj/*.mode*
@@ -10,10 +29,12 @@ src/facebook-ios-sdk.xcodeproj/*.mode*
 src/build/
 build/
 lib/
+docs/
 test/UnitTest/UnitTest.xcodeproj/*.pbxuser
 test/UnitTest/UnitTest.xcodeproj/*.mode*
 test/UnitTest/build/
 project.xcworkspace
+ios-sdk.xcodeproj
 xcuserdata
 .arcbuildbootstrap
 TestAppIdAndSecret.xcconfig
@@ -22,4 +43,15 @@ TestAppIdAndSecret.xcconfig
 Carthage
 
 # vim temp files
-*.swp
+*.sw?
+*.un~
+
+# buck
+buck-out/
+.buckd/
+
+infer-out
+
+#generated doc files
+docs/
+

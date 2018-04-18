@@ -1,4 +1,4 @@
-// Copyright (c) 2014-present, Facebook, Inc. All rights reserved.
+// Copyright 2004-present Facebook. All Rights Reserved.
 //
 // You are hereby granted a non-exclusive, worldwide, royalty-free license to use,
 // copy, modify, and distribute this software in source code or binary form for use
@@ -90,6 +90,8 @@
     case AKFLoginFlowStateEmailInput:
     case AKFLoginFlowStateCodeInput:
     case AKFLoginFlowStateNone:
+    case AKFLoginFlowStateResendCode:
+    case AKFLoginFlowStateCountryCode:
       return nil;
   }
 
@@ -111,6 +113,8 @@
     case AKFLoginFlowStateEmailVerify:
     case AKFLoginFlowStateSendingCode:
     case AKFLoginFlowStateVerifyingCode:
+    case AKFLoginFlowStateCountryCode:
+    case AKFLoginFlowStateResendCode:
       return AKFButtonTypeDefault;
   }
 }
@@ -140,6 +144,8 @@
       progress = 5;
       break;
     case AKFLoginFlowStateError:
+    case AKFLoginFlowStateResendCode:
+    case AKFLoginFlowStateCountryCode:
     case AKFLoginFlowStateNone:
       return nil;
   }
